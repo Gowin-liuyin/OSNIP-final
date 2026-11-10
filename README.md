@@ -44,3 +44,8 @@ python scripts/run_reproduction_3b.py --model-path model/Llama-3.2-3B-Instruct -
 训练最小化 clean→perturbed KL、绝对余弦相似度超阈值惩罚和密钥差异损失；等范数投影恢复每个向量的原始范数。正式评估用 `run_evaluation_suite.py` 将 PPL、任务效用和隐私指标绑定到同一检查点，再用 `aggregate_reproduction_report.py` 汇总。记录模型、输入、检查点的散列和评估范围；短程诊断和缩小词表的结果应单列。
 
 本仓库保存源码、配置和测试。数据、底座、训练权重和报告由操作者本地管理。A 组件见 [AloePri-final](https://github.com/Gowin-liuyin/AloePri-final)，组合运行时见 A+B 仓库。
+
+## 更多文档
+
+- [复现操作手册](docs/REPRODUCTION.md)
+- [维护与贡献](CONTRIBUTING.md)
