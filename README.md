@@ -1,14 +1,6 @@
 # OSNIP-final：独立训练与评估
 
-本仓库实现 OSNIP 的独立工程复现：冻结语言模型，在客户端用密钥条件编码器扰动 token 嵌入，并在服务端模型上衡量效用与隐私。编码器是可配置的工程实现。合成测试通过、单项效用达标或训练完成，均不能证明论文中的隐私与效用已联合复现。
-
-| 路径 | 用途 |
-| --- | --- |
-| `src/osnip_repro/` | 编码器、等范数投影、训练目标、课程调度、数据与检查点 |
-| `src/attack_ready/` | 四组观测的合成诊断；其中的 A+B 噪声代理不等同于真实部署 |
-| `configs/` | 1B、3B、消融及评估配方 |
-| `scripts/` | 数据准备、输入校验、训练、续训、评估和报告汇总 |
-| `tests/` | 数学性质、梯度、输入契约和实验流水线的回归测试 |
+这个仓库独立复现 OSNIP 的训练和评估。语言模型的权重保持不变；客户端根据密钥改变传给模型的词向量，再比较改写前后的模型表现和信息泄露。编码器是本项目的工程实现。只想检查安装时，先跑下面的合成测试，不需要下载模型。
 
 ## 安装和快速验证
 
@@ -41,11 +33,23 @@ python scripts/run_reproduction_3b.py --model-path model/Llama-3.2-3B-Instruct -
 
 数据路径由选定配置决定，`--data-root` 指向包含 `data/` 的目录。1B 主线可依次使用 `validate_reproduction_inputs.py`、`run_gate0.py`、`run_gate1.py` 和 `train_streaming.py`；续训使用 `run_osnip_continuation.py`。历史配置中的模型位置是原实验记录，新环境通过命令行显式传入本地模型路径。
 
-训练最小化 clean→perturbed KL、绝对余弦相似度超阈值惩罚和密钥差异损失；等范数投影恢复每个向量的原始范数。正式评估用 `run_evaluation_suite.py` 将 PPL、任务效用和隐私指标绑定到同一检查点，再用 `aggregate_reproduction_report.py` 汇总。记录模型、输入、检查点的散列和评估范围；短程诊断和缩小词表的结果应单列。
+训练尽量保持模型输出，同时拉开原始向量与扰动向量的方向，并让不同密钥产生不同表示。投影步骤保持每个向量的长度。正式评估用 `run_evaluation_suite.py` 将 PPL、任务效用和隐私指标绑定到同一检查点，再用 `aggregate_reproduction_report.py` 汇总。记录模型、输入、检查点的散列和评估范围；短程诊断和缩小词表的结果应单列。训练完成或单项效用达标，都不能证明隐私与效用已联合复现。
 
 本仓库保存源码、配置和测试。数据、底座、训练权重和报告由操作者本地管理。A 组件见 [AloePri-final](https://github.com/Gowin-liuyin/AloePri-final)，组合运行时见 A+B 仓库。
 
+## 代码在哪里
+
+| 路径 | 用途 |
+| --- | --- |
+| `src/osnip_repro/` | 编码器、等范数投影、训练目标、课程调度、数据与检查点 |
+| `src/attack_ready/` | 四组观测的合成诊断；其中的 A+B 噪声代理不等同于真实部署 |
+| `configs/` | 1B、3B、消融及评估配方 |
+| `scripts/` | 数据准备、输入校验、训练、续训、评估和报告汇总 |
+| `tests/` | 数学性质、梯度、输入契约和实验流水线的回归测试 |
+
 ## 更多文档
 
+- [文档导航](docs/README.md)
 - [复现操作手册](docs/REPRODUCTION.md)
 - [维护与贡献](CONTRIBUTING.md)
+- [变更记录](CHANGELOG.md) · [引用与来源](CITATION.md) · [安全问题报告](SECURITY.md)
