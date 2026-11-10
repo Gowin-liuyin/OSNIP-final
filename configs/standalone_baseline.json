@@ -1,0 +1,10 @@
+{
+  "format": "osnip_standalone_reproduction_baseline_v1",
+  "paper_version": "arXiv:2601.22752v1",
+  "paper_models": ["Llama-3.2-1B", "Llama-3.2-3B-Instruct", "Qwen3-14B", "Qwen3-32B"],
+  "training_data": {"total_samples": 65000, "general_fraction": 0.8, "science_reasoning_fraction": 0.2},
+  "objective": {"utility": "KL(clean_logits || encrypted_logits)", "privacy": "max(0, abs(cos(h,z)) - epsilon)", "diversity": "max(0, margin - ||z(h,k1)-z(h,k2)||_2)", "iso_norm_projection": true, "encoder_init": "identity_plus_small_residual"},
+  "status": "planned",
+  "paper_result": false,
+  "notes": ["Exact encryptor architecture and several hyperparameters are not fully specified in the paper text.", "Do not label the configurable MLP baseline as author code."]
+}

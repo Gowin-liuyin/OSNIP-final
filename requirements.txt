@@ -1,0 +1,15 @@
+# Formal reproduction environment (recorded lab server: torch 2.9.0+cu128,
+# transformers 5.21.0, datasets 5.1.0). transformers 4.45-4.55 remains
+# best-effort through the code's compatibility fallbacks, but is not the
+# installed/tested formal environment.
+torch>=2.6
+transformers>=5.21,<6
+datasets>=2.19,<6
+safetensors>=0.8
+accelerate>=1.1
+numpy>=1.26
+pytest>=8
+huggingface-hub>=1.31,<3
+nltk>=3.8
+bert-score>=0.3.13
+modelscope>=1.40,<2

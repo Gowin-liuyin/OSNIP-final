@@ -1,0 +1,30 @@
+{
+  "format": "osnip_summary_evaluation_policy_v1",
+  "scope": "formal_utility_comparison_not_security_proof",
+  "manifest": "data/osnip_sources/cnn_dailymail_test.manifest.json",
+  "manifest_sha256": "0485970230d2b29acb210b59fccce1e653826be69b0e15cc79ca76523f8141bf",
+  "data_jsonl": "data/osnip_sources/cnn_dailymail_test.jsonl",
+  "data_sha256": "417b9174f4042b0de44e3fc98a27ed54313ad0ad978c60ae164cb8f6e5b863e7",
+  "records": 999,
+  "requested_source_records": 1000,
+  "deduplication_deviation": "1000 raw source rows produced 999 unique records; all 999 must be evaluated",
+  "max_input_length": 512,
+  "max_new_tokens": 128,
+  "num_beams": 1,
+  "bertscore_model": "roberta-large",
+  "require_bertscore": true,
+  "require_test_split": true,
+  "min_rouge_l_retention": 0.85,
+  "min_bertscore_f1_retention": 0.95,
+  "threshold_rationale": "paper 1B OSNIP Table 3: ROUGE-L 0.157 vs clean 0.178 = 88.2% retention; BERTScore 0.840 vs 0.854 = 98.4% RP. A 0.95 ROUGE-L gate would fail the paper's own 1B result; 0.85 is the absolute floor and BERTScore remains the headline retention.",
+  "thresholds_are_project_engineering_gates": true,
+  "limitations": [
+    "ROUGE-L uses the existing whitespace-tokenized local implementation; not claimed identical to paper scorer.",
+    "Scorer local manifest and every model/tokenizer SHA-256 must be verified at execution; mirror equivalence to a particular Hugging Face revision remains unproven.",
+    "One greedy generation per prompt; formal multi-seed report compares independent training seeds."
+  ],
+  "local_scorer_manifest": "model/roberta-large/download_manifest.json",
+  "scorer_local_bytes_required": true,
+  "min_clean_rouge_l": 0.05,
+  "min_clean_bertscore_f1": 0.5
+}

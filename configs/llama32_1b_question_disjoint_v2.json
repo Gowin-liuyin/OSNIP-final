@@ -1,0 +1,281 @@
+{
+  "format": "osnip_llama32_1b_question_disjoint_plan_v2",
+  "status": "fixed_inputs_pending_validation_training_not_started",
+  "model": {
+    "model_id": "meta-llama/Llama-3.2-1B",
+    "local_dir": "/Users/shengfeng/Code/NSS/OSNIP/model/Llama-3.2-1B",
+    "revision": "4e20de362430cd3b72f300e6b0f18e50e7166e08",
+    "config_sha256": "bfb5d39c327ee5c3a65e3574596ff30b052a445cfc59a25bdf3b4c0c5a44f4d2",
+    "weight_sha256": "68a2e4be76fa709455a60272fba8e512c02d81c46e6c671cc9449e374fd6809a",
+    "tokenizer_sha256": "79e3e522635f3171300913bb421464a87de6222182a0570b9b2ccba2a964b2b4",
+    "dtype": "float32",
+    "device": "mps",
+    "use_cache": false,
+    "expected_architecture": "read_from_local_config_not_assumed",
+    "download_source": "AI-ModelScope/Llama-3.2-1B",
+    "revision_verification": "requested HF revision; mirror equivalence is not independently verified; local bytes locked by SHA-256"
+  },
+  "threat_model": {
+    "server_knows_model_and_vocabulary": true,
+    "server_has_client_key": false,
+    "server_can_tamper": false,
+    "key_attacks_in_scope": false
+  },
+  "objective": {
+    "utility": "KL(clean_logits || encrypted_logits) on valid causal targets",
+    "privacy": "relu(abs(cos(h,z)) - epsilon)",
+    "diversity": "relu(margin - l2(z_key1,z_key2))",
+    "projection": "iso_norm_project(h_plus_delta, h)",
+    "epsilon": 0.3,
+    "diversity_margin": 1.0,
+    "key_schedule": "independent_key_per_example_shared_across_tokens",
+    "diversity_space": "raw_r"
+  },
+  "data": {
+    "train_total": 65000,
+    "general_fraction": 0.7833230769230769,
+    "science_fraction": 0.2166769230769231,
+    "sources": [
+      "Alpaca",
+      "ARC-Easy",
+      "ARC-Challenge",
+      "SciQ"
+    ],
+    "train_revision": "osnip_65k_question_disjoint_seed20261019_v2",
+    "train_sha256": "e3042c5024b5113dd65ec8b578b4880f76e6f79e53c567abd1a3fa754ee8e274",
+    "split_policy": "raw_source_identity_and_normalized_question_text_disjointness_with_fixed_exclusions",
+    "knn": {
+      "source": "Alpaca",
+      "min_chars": 20,
+      "max_chars": 512,
+      "samples": 1000,
+      "seed": 42
+    },
+    "vma": {
+      "sources": [
+        "Alpaca",
+        "ARC-Easy",
+        "ARC-Challenge",
+        "SciQ",
+        "WikiText-103"
+      ],
+      "min_chars": 20,
+      "max_chars": 512,
+      "prompts": 200,
+      "keys_per_prompt": 5,
+      "seed": 42,
+      "attack_manifest": "data/paper_attack_sets/attack_manifest.json"
+    },
+    "valid_sha256": "e98eed70d19eb08726f44f348bf307a927abb81c0d4bb569325c773b73667a09",
+    "test_sha256": "e128e7d31c0cd205c7907839565217313358d94b8b4adaa23e732412492116ea",
+    "manifest_sha256": "8a9bddddd5a3ce92c19060067c809757d0ff2de7e880560455129150bf1c69e1",
+    "raw_sources_manifest_sha256": "3a2e178d73cf6683468e4bd56bd7e542656728f5f6e9e32d284de6e651029031",
+    "attack_manifest_sha256": "77650da6b6606764708989265d61cbdc53bc39743e72009c0bf9d2e55c09eaa5",
+    "source_revisions": {
+      "alpaca": "local-reference-2eddafc6b977608d778aaab8dfc7e50e547b3af9826dfb9e909d9fc362e4a419",
+      "arc_easy": "210d026faf9955653af8916fad021475a3f00453",
+      "arc_challenge": "210d026faf9955653af8916fad021475a3f00453",
+      "sciq": "2c94ad3e1aafab77146f384e23536f97a4849815",
+      "wikitext": "b08601e04326c79dfdd32d625aee71d232d685c3"
+    },
+    "stopword_snapshot_sha256": "f6d005956f407dbc6ea32e5ff0c7e8e6f71488d3239b9023efdc7fc139d6375b",
+    "wikitext2_manifest_sha256": "af3684d7ff11ba9302d3064a05a3ade57f890dc5a4cbd3243b659a21c08ce036",
+    "wikitext2_test_sha256": "03e63205792377cd517354c11c9e51588c3ad1a962cd70b80dc75492b83cd091",
+    "dataset_policy": "question_disjoint_v2",
+    "fresh_training_required": true,
+    "manifest_path": "data/osnip_65k_question_disjoint_v2/data_manifest.json",
+    "paper_general_fraction_target": 0.8,
+    "general_fraction_is_paper_exact": false,
+    "exclusion_sha256": {
+      "knn_reserved": "33581bb3ad8ca5c3647dd1d6fb854905eb2ca115cf93261a0740efe117c9a672",
+      "knn": "7a88ed545acb641b4fc9377805853066c64c54d188bc5f62a14219ccc64c124f",
+      "vma": "13c21a6a33834202d260d0aa3aa4559adcf68f62b9995c9cc24688d87b36dd9c",
+      "sciq_confirmatory": "4de3d10ac97c9a46cbefdd226effe7dcc927e308a9733292801e142305080ff8"
+    },
+    "paper_science_fraction_target": 0.2
+  },
+  "training": {
+    "batch_size": 1,
+    "gradient_accumulation_steps": 256,
+    "max_length": 128,
+    "streaming": true,
+    "seeds": [
+      42
+    ],
+    "variants": [
+      "gated_default",
+      "constant_balanced",
+      "two_phase_diagnostic"
+    ],
+    "checkpoint_interval_steps": 100,
+    "optimizer": "AdamW",
+    "learning_rate": 1e-05,
+    "weight_decay": 0.0,
+    "grad_clip": 1.0,
+    "gradient_balance": "none",
+    "warmup_steps": 200,
+    "constraint_ramp_steps": 1000,
+    "loss_warmup_steps": 10,
+    "constraint_mode": "gated",
+    "gate_scope": "effective_batch",
+    "tau_low": 0.05,
+    "tau_high": 0.15,
+    "lambda_util": 1.0,
+    "lambda_priv": 1.0,
+    "lambda_div": 2.0,
+    "key_dim": 32,
+    "hidden_dim": 256,
+    "alpha_init": 0.05,
+    "alpha_ramp_steps": 0,
+    "encryptor_architecture": "mlp_residual_v1",
+    "max_valid_samples": 256,
+    "dtype": "bfloat16",
+    "encryptor_variants": [
+      "mlp_residual_v1",
+      "mlp_residual_wide_v1",
+      "low_rank_residual_v1",
+      "key_film_residual_v1",
+      "tokenwise_key_v1"
+    ],
+    "diversity_space": "raw_r",
+    "formal_steps": 2032,
+    "recipe_relock_20261102": "Re-locked to PMLR 306 Appendix D.6 / Table 9 after correcting the arXiv-v1-only audit: lr 1e-5, tau [0.05,0.15], 10-step loss warm-up, seed 42, effective batch 256 (BS/GPU 64 x 4 GPUs), steps 8*65000/256=2032. The earlier 1e-4/tau 0.3/8125-step lock was derived from arXiv v1 (which lacks D.6) and from treating BS/GPU as a single-GPU batch; it is superseded."
+  },
+  "utility_gates": {
+    "max_ppl_ratio": 1.25,
+    "max_mean_logit_kl": 0.1,
+    "min_task_retention": 0.95,
+    "thresholds_are_engineering_gates": true
+  },
+  "privacy_gates": {
+    "clean_positive_control_min_top1": 0.95,
+    "target_knn_top10": 0.1,
+    "vma_reports_total_and_clean_asr": true,
+    "paired_confidence_intervals": true,
+    "thresholds_are_project_acceptance_gates": true
+  },
+  "required_artifacts": [
+    "model_manifest.json",
+    "data_manifest.json",
+    "environment.json",
+    "train_config.json",
+    "train_progress.jsonl",
+    "last.pt",
+    "best_utility.pt",
+    "best_pareto.pt",
+    "utility_test.json",
+    "task_utility_test.json",
+    "sliding_ppl_test.json",
+    "paper_protocol_test.json",
+    "confidence_intervals.json",
+    "source_hashes.json",
+    "utility_report.json",
+    "knn_report.json",
+    "vma_report.json",
+    "final_reproduction_report.md"
+  ],
+  "security_accepted_default": false,
+  "gate1_pilot": {
+    "scope": "exploratory_validation_only_not_main_preregistered_run",
+    "initialization": "fresh_encoder_no_resume",
+    "steps": 1000,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "max_length": 128,
+    "max_valid_samples": 128,
+    "key_dim": 32,
+    "hidden_dim": 256,
+    "encryptor_architecture": "mlp_residual_v1",
+    "epsilon": 0.3,
+    "diversity_margin": 1.0,
+    "diversity_space": "projected_z",
+    "lambda_util": 1.0,
+    "lambda_priv": 1.0,
+    "lambda_div": 1.0,
+    "warmup_steps": 100,
+    "tau_low": 0.05,
+    "tau_high": 0.2,
+    "learning_rate": 1e-05,
+    "weight_decay": 0.0,
+    "device": "mps",
+    "dtype": "float32",
+    "seed": 20261019,
+    "constraint_mode": "gated",
+    "grad_clip": 1.0,
+    "checkpoint_every": 100,
+    "evaluate_every": 100,
+    "loss_warmup_steps": 10
+  },
+  "limitations": [
+    "Data-only verification cannot establish utility or privacy.",
+    "Actual Alpaca ratio is 78.3323%, deviating from paper 80/20; no duplicated rows to compensate.",
+    "Historical holdout questions remain exposed; only reserved SciQ is unused and must not guide tuning.",
+    "Gate1 pilot settings are exploratory and do not freeze the full main-run hyperparameters.",
+    "Start from initialization; legacy checkpoint/cursor/optimizer may not be resumed into v2.",
+    "No key attacks. Full independent KNN/VMA and multi-seed utility acceptance remain required."
+  ],
+  "pre_pilot_utility_control": {
+    "scope": "decoder_backed_validation_of_completed_geometry_control_only",
+    "checkpoint": "/Users/shengfeng/Code/NSS/OSNIP/reports/llama32_1b/privacy_geometry_v2_full65k_lr3e4_acc8_seed20261020/encoder.pt",
+    "checkpoint_sha256": "ecececd30d3eef29c3c16fae1dd5adaf4db0b8818aa7a18bdeb9739f749a0e5c",
+    "checkpoint_config_sha256": "76572ecc18e175eb66e7ecdaf3898c07e55364895cee167abc28b57cb3af800c",
+    "data_jsonl": "/Users/shengfeng/Code/NSS/OSNIP/reports/llama32_1b/privacy_geometry_matched_lr_20261020/validation_subset.jsonl",
+    "data_sha256": "506cfd8f7a7fabdb19c234ba8a663f22f6d8155c478f155e982939af42d9904d",
+    "max_samples": 128,
+    "max_length": 128,
+    "batch_size": 1,
+    "seed": 20261021,
+    "max_ppl_ratio": 1.25,
+    "max_mean_kl": 0.1,
+    "utility_failure_blocks_pilot": false,
+    "limitations": [
+      "Diagnostic encoder is fixed and is not used to initialize the fresh v2 pilot.",
+      "One new client key per prompt; not identical observations to CPU five-key KNN.",
+      "Only validation, no reserved confirmatory or test split."
+    ]
+  },
+  "additional_pre_pilot_utility_controls": [
+    {
+      "scope": "decoder_backed_validation_of_completed_geometry_control_only",
+      "checkpoint": "/Users/shengfeng/Code/NSS/OSNIP/reports/llama32_1b/privacy_geometry_v2_full65k_lr3e4_acc8_seed20261021/encoder.pt",
+      "checkpoint_sha256": "990bec6288eb03b2a393241cf2bbac103eed435b95ed50068d3742f9b599dcc9",
+      "checkpoint_config_sha256": "61663bdbbf1d391bf7a3b161665523744b18195714c2250b6e3e6ab055cf7ca7",
+      "data_jsonl": "/Users/shengfeng/Code/NSS/OSNIP/reports/llama32_1b/privacy_geometry_matched_lr_20261020/validation_subset.jsonl",
+      "data_sha256": "506cfd8f7a7fabdb19c234ba8a663f22f6d8155c478f155e982939af42d9904d",
+      "max_samples": 128,
+      "max_length": 128,
+      "batch_size": 1,
+      "seed": 20261021,
+      "max_ppl_ratio": 1.25,
+      "max_mean_kl": 0.1,
+      "utility_failure_blocks_pilot": false,
+      "limitations": [
+        "Diagnostic encoder is fixed and is not used to initialize the fresh v2 pilot.",
+        "One new client key per prompt; not identical observations to CPU five-key KNN.",
+        "Only validation, no reserved confirmatory or test split."
+      ],
+      "output_suffix": "_geometry_control_seed20261021_utility.json"
+    },
+    {
+      "scope": "decoder_backed_validation_of_completed_geometry_control_only",
+      "checkpoint": "/Users/shengfeng/Code/NSS/OSNIP/reports/llama32_1b/privacy_geometry_v2_full65k_lr3e4_acc8_seed20261022/encoder.pt",
+      "checkpoint_sha256": "5ff3c1a5a26797d7473fbf4225e91e6f010412ff8b54d8248ab072e9d37664b3",
+      "checkpoint_config_sha256": "5e55f8525eb0b3f056045eea7d3f8e4ea606aacefc9c8a1da216b30f41cfcab4",
+      "data_jsonl": "/Users/shengfeng/Code/NSS/OSNIP/reports/llama32_1b/privacy_geometry_matched_lr_20261020/validation_subset.jsonl",
+      "data_sha256": "506cfd8f7a7fabdb19c234ba8a663f22f6d8155c478f155e982939af42d9904d",
+      "max_samples": 128,
+      "max_length": 128,
+      "batch_size": 1,
+      "seed": 20261021,
+      "max_ppl_ratio": 1.25,
+      "max_mean_kl": 0.1,
+      "utility_failure_blocks_pilot": false,
+      "limitations": [
+        "Diagnostic encoder is fixed and is not used to initialize the fresh v2 pilot.",
+        "One new client key per prompt; not identical observations to CPU five-key KNN.",
+        "Only validation, no reserved confirmatory or test split."
+      ],
+      "output_suffix": "_geometry_control_seed20261022_utility.json"
+    }
+  ]
+}
